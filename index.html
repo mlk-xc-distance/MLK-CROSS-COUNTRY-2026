@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MLK Cross Country — Team Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site">
+  <nav class="nav">
+    <a class="team-name" href="index.html">MLK <span>XC</span></a>
+    <button class="nav-toggle" onclick="document.getElementById('navlinks').classList.toggle('open')">Menu</button>
+    <ul id="navlinks">
+      <li><a href="#next-meet">Next Meet</a></li>
+      <li><a href="#calendar">Calendar</a></li>
+      <li><a href="roster.html">Roster</a></li>
+      <li><a href="#links">Links</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="hero" id="next-meet">
+  <svg class="contours" viewBox="0 0 900 300" preserveAspectRatio="none">
+    <path d="M-20,250 C150,180 250,280 420,200 C560,140 650,220 900,150" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+    <path d="M-20,200 C150,140 250,220 420,150 C560,100 650,170 900,100" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+    <path d="M-20,290 C150,230 250,310 420,260 C560,200 650,270 900,210" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+  </svg>
+  <div class="hero-inner" id="heroContent">
+    <!-- filled by script from the meets list, based on today's date -->
+  </div>
+</section>
+
+<section id="calendar">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Season calendar</h2>
+        <p>The full season, in order. Past meets are greyed out and checked off.</p>
+      </div>
+    </div>
+    <ol class="meet-list" id="meetList"></ol>
+  </div>
+</section>
+
+<section id="links">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Team links</h2>
+        <p>Forms, policies, and anything else the team needs on hand.</p>
+      </div>
+    </div>
+    <h3 class="link-subhead">Info</h3>
+    <div class="link-grid">
+      <a class="link-card" href="https://tn.milesplit.com/teams/4822-martin-luther-king-high-school" target="_blank" rel="noopener">
+        <div class="t">MileSplit Team Page</div>
+        <div class="d">Rankings, results, and full roster</div>
+      </a>
+      <a class="link-card" href="https://calendar.google.com/calendar/u/2?cid=OGIyNTU3N2YyNzdjYThlZWFhMzg5M2U1Zjc2NGVmZGM1MThhYzgxZDBkMWMxYTM2YTEwYWI3NjVjYTUxZmIwYUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t" target="_blank" rel="noopener">
+        <div class="t">Team Calendar (Google)</div>
+        <div class="d">Subscribe for automatic updates</div>
+      </a>
+      <a class="link-card" href="#">
+        <div class="t">Team Handbook</div>
+        <div class="d">Expectations, attendance policy, gear list</div>
+      </a>
+      <a class="link-card" href="#">
+        <div class="t">Weather & Cancellation Policy</div>
+        <div class="d">How practice/meet delays are decided and shared</div>
+      </a>
+      <a class="link-card" href="maps/voyles-classic.jpg" target="_blank" rel="noopener">
+        <div class="t">Course Map — MSCCA Voyles Classic</div>
+        <div class="d">The Hermitage, Hermitage, TN</div>
+      </a>
+      <a class="link-card" href="maps/southern-showcase.jpg" target="_blank" rel="noopener">
+        <div class="t">Course Map — The Southern Showcase</div>
+        <div class="d">John Hunt Park, Huntsville, AL</div>
+      </a>
+      <a class="link-card" href="maps/frank-horton.jpg" target="_blank" rel="noopener">
+        <div class="t">Course Map — Hoka Frank Horton Night Classic</div>
+        <div class="d">Shelby Farms Park, Memphis, TN</div>
+      </a>
+      <a class="link-card" href="maps/mscca-championships.jpg" target="_blank" rel="noopener">
+        <div class="t">Course Map — MSCCA Championships</div>
+        <div class="d">Buckner City Park, Dickson, TN</div>
+      </a>
+    </div>
+
+    <h3 class="link-subhead">To Do List</h3>
+    <div class="link-grid">
+      <a class="link-card" href="https://nashvillepublic-tn.finalforms.com" target="_blank" rel="noopener">
+        <div class="t">Physical / Registration Form</div>
+        <div class="d">Please complete ASAP if you haven't already.</div>
+      </a>
+      <a class="link-card" href="https://www.remind.com/join/xcmlk" target="_blank" rel="noopener">
+        <div class="t">Join Remind App group for Students and Parents</div>
+        <div class="d">Official team correspondence from coaches.</div>
+      </a>
+      <a class="link-card" href="https://groupme.com/join_group/88888635/VXtmDOob" target="_blank" rel="noopener">
+        <div class="t">Join GroupMe group for MLK XC Parents</div>
+        <div class="d">Just a group chat among parents.</div>
+      </a>
+      <a class="link-card" href="https://www.signupgenius.com/go/30E0E4AA4AD2EA20-65183699-meet" target="_blank" rel="noopener">
+        <div class="t">Sign up to host a meet</div>
+        <div class="d">Volunteer slots for meet-day support</div>
+      </a>
+      <a class="link-card" href="#">
+        <div class="t">Uniform / Gear Order</div>
+        <div class="d">Sizing and ordering info</div>
+      </a>
+    </div>
+    <p class="placeholder-note">Replace the href="#" placeholders with your real links.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>Martin Luther King High School Cross Country · Season 2026</div>
+    <div>Questions? <a href="mailto:brandonally@yahoo.com">brandonally@yahoo.com</a></div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   EDIT ME: meets. date = "YYYY-MM-DD", used to sort and to
+   decide past vs. next. link/results/stream are optional.
+   ============================================================ */
+const MEETS = [
+  { name: "MSCCA Voyles Classic", location: "The Hermitage, Hermitage, TN", address: "4580 Rachels Lane, Hermitage, TN 37076", parking: "$10/car, cash only", date: "2026-09-05", time: "Girls Varsity 7:45 AM · Boys Varsity 8:20 AM", link: "https://tn.milesplit.com/meets/724605-mscca-voyles-classic-2026/info", results: "https://tn.milesplit.com/meets/724605-mscca-voyles-classic-2026/results" },
+  { name: "The Southern Showcase", location: "John Hunt Running Park, Huntsville, AL", address: "2151 Airport Rd SW, Huntsville, AL 35801", parking: "No fee — city-managed lots; arrive early, plenty of handicap parking", date: "2026-09-19", time: "Tentative schedule — check meet page", link: "https://al.milesplit.com/meets/719044-the-southern-showcase-powered-by-huntsville-high-school-2026/info", results: "https://al.milesplit.com/meets/719044-the-southern-showcase-powered-by-huntsville-high-school-2026/results" },
+  { name: "Hoka Frank Horton Night Classic", location: "Shelby Farms Park, Memphis, TN", address: "6903 Great View Dr, Memphis, TN 38120", parking: "$7/car in advance, $10/car day-of; team buses park free in Lot A", date: "2026-10-03", time: "HS 5K — see meet page for times", link: "https://tn.milesplit.com/meets/723708-hoka-frank-horton-night-classic-hs-2026/info", results: "https://tn.milesplit.com/meets/723708-hoka-frank-horton-night-classic-hs-2026/results" },
+  { name: "MSCCA Championships", location: "Buckner City Park, Dickson, TN", address: "200 Buckner Park Dr, Dickson, TN 37055", parking: "$5/car, cash only; overflow shuttle from Dickson Co. HS", date: "2026-10-17", time: "Boys Varsity 9:00 AM · Girls Varsity 9:40 AM", link: "https://tn.milesplit.com/meets/724604-mscca-championships-2026/info", results: "https://tn.milesplit.com/meets/724604-mscca-championships-2026/results" },
+  { name: "Regionals", location: "Sanders Ferry Park, Hendersonville, TN", address: "513 Sanders Ferry Rd, Hendersonville, TN 37075", date: "2026-10-27", time: "TBD" },
+  { name: "State Championship", location: "Shelby Farms Park, Memphis, TN", address: "6903 Great View Dr, Memphis, TN 38120", date: "2026-11-06", time: "TBD" },
+];
+
+(function render(){
+  const todayStr = new Date().toISOString().slice(0,10);
+
+  function fmtDate(iso){
+    const d = new Date(iso + "T00:00:00");
+    return d.toLocaleDateString('en-US', { month:'short', day:'numeric' });
+  }
+  function meetNameHtml(m){
+    return m.link ? `<a href="${m.link}" target="_blank" rel="noopener">${m.name}</a>` : m.name;
+  }
+  function linkFact(label, url, text){
+    return url ? `<div><div class="label">${label}</div><div class="value"><a href="${url}" target="_blank" rel="noopener" style="color:inherit;">${text}</a></div></div>` : '';
+  }
+  function mapsUrl(m){
+    if (!m.address) return null;
+    const isApple = /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent) && !/Windows/.test(navigator.userAgent);
+    return isApple
+      ? `https://maps.apple.com/?q=${encodeURIComponent(m.address)}`
+      : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(m.address)}`;
+  }
+
+  // ---- Hero: next upcoming meet ----
+  const sorted = [...MEETS].sort((a,b) => a.date.localeCompare(b.date));
+  const upcoming = sorted.filter(m => m.date >= todayStr);
+  const hero = document.getElementById('heroContent');
+  if (upcoming.length){
+    const next = upcoming[0];
+    hero.innerHTML = `
+      <div class="kicker">Next meet</div>
+      <h1>${meetNameHtml(next)} — ${next.location}</h1>
+      <div class="meet-facts">
+        <div><div class="label">Date</div><div class="value">${fmtDate(next.date)}</div></div>
+        <div><div class="label">Location</div><div class="value">${next.location}</div></div>
+        <div><div class="label">Race times</div><div class="value">${next.time}</div></div>
+        ${linkFact("Address", mapsUrl(next), next.address || "")}
+        ${next.parking ? `<div><div class="label">Parking</div><div class="value">${next.parking}</div></div>` : ''}
+        ${linkFact("Results", next.results, "View results →")}
+        ${linkFact("Stream", next.stream, "Watch live →")}
+      </div>
+    `;
+  } else {
+    hero.innerHTML = `
+      <div class="kicker">Season complete</div>
+      <h1>No meets remaining on the schedule</h1>
+    `;
+  }
+
+  // ---- Full calendar, past meets greyed out ----
+  const meetList = document.getElementById('meetList');
+  meetList.innerHTML = sorted.map((m, i) => {
+    const isPast = m.date < todayStr;
+    const isNext = upcoming.length && m === upcoming[0];
+    const cls = [isPast ? 'is-past' : '', isNext ? 'is-next' : ''].filter(Boolean).join(' ');
+    const mapsLink = mapsUrl(m);
+    const locHtml = mapsLink
+      ? `<a href="${mapsLink}" target="_blank" rel="noopener" style="color:inherit;">${m.location} · Get directions</a>`
+      : m.location;
+    const parkingHtml = m.parking ? `<div class="meet-parking">Parking: ${m.parking}</div>` : '';
+    return `
+      <li class="meet-row ${cls}">
+        <div class="num">${i + 1}</div>
+        <div>
+          <div class="meet-name">${meetNameHtml(m)}</div>
+          <div class="meet-loc">${locHtml}</div>
+          ${parkingHtml}
+        </div>
+        <div class="meet-when"><span class="d">${fmtDate(m.date)}</span>${m.time}</div>
+      </li>
+    `;
+  }).join('');
+})();
+</script>
+
+</body>
+</html>

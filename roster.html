@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roster — MLK Cross Country</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site">
+  <nav class="nav">
+    <a class="team-name" href="index.html">MLK <span>XC</span></a>
+    <button class="nav-toggle" onclick="document.getElementById('navlinks').classList.toggle('open')">Menu</button>
+    <ul id="navlinks">
+      <li><a href="index.html#next-meet">Next Meet</a></li>
+      <li><a href="index.html#calendar">Calendar</a></li>
+      <li><a href="roster.html">Roster</a></li>
+      <li><a href="index.html#links">Links</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section id="roster" style="padding-top:40px;">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Roster</h2>
+        <p>Tap a filter to narrow by grade. Drop a JPEG in <code>photos/</code> for any athlete to swap in their headshot.</p>
+      </div>
+      <div class="roster-filters" id="rosterFilters"></div>
+    </div>
+    <div class="roster-grid" id="rosterGrid"></div>
+    <p class="placeholder-note">Cross country roster (39 athletes) — 38 from MileSplit plus Colin Dinh, added manually. Each card looks for <code>photos/lastname-firstname.jpg</code>; add the file and it replaces the initials automatically.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>Martin Luther King High School Cross Country · Season 2026</div>
+    <div>Questions? <a href="mailto:brandonally@yahoo.com">brandonally@yahoo.com</a></div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   EDIT ME: roster. Pulled from MileSplit's team roster page,
+   trimmed to XC athletes only. classYear = graduation year,
+   used to compute grade automatically. photo = filename this
+   card looks for inside a "photos/" folder next to this file;
+   falls back to initials if missing.
+   ============================================================ */
+const GRADE_BY_CLASS_YEAR = { 2027: "Sr", 2028: "Jr", 2029: "So", 2030: "Fr" };
+
+function slug(first, last){
+  return (first + "-" + last).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
+
+const ROSTER_RAW = [
+  ["Simon","Ally","m",2027], ["Praveen","Bhave","m",2030],
+  ["Sachin","Bhave","m",2028], ["Will","Blocher","m",2029], ["Eleanor","Bonino","f",2028],
+  ["Nevaeh","Bowers","f",2027], ["Ivy","Brame-Blake","f",2027], ["Harper","Bush","m",2028],
+  ["Olivia","Collins","f",2027], ["Liam","Durham","m",2029], ["Jack","Edmonson","m",2029],
+  ["Dillon","Fell","m",2028], ["Brent","Ferrell","m",2027], ["Miles","Fowler","m",2028],
+  ["Campbell","Gnetz","m",2028], ["Vicki","Grammer","f",2029], ["Leah","Hatt","f",2029],
+  ["Cooper","Hubbard","m",2028], ["Brandon","Johnson","m",2028], ["Tanner","Jones","m",2028],
+  ["Emmy","Kotras","f",2030], ["Joseph","Lambert","m",2028], ["Ben","Lewis","m",2029],
+  ["Will","Lindstrom","m",2030], ["Rolando","Muniz-Huerta","m",2028], ["Ethan","Newberry","m",2030],
+  ["Samuel","Petrony","m",2027], ["Ava","Sanderfur","f",2029],
+  ["Oscar","Spitzer","m",2027], ["Damien","Tellez","m",2028], ["Winston","Walker","m",2028],
+  ["Cooper","Wallace","m",2028], ["Margaret","Ward","f",2029], ["Ellianna","Wicker","f",2029],
+  ["Kenzie","Wilcox","f",2029], ["Aidan","Withers","m",2028], ["Ruby","York","f",2029],
+  ["Claude","Yriart","m",2029],
+  ["Colin","Dinh","m",2028],
+];
+
+const GRADE_SORT_ORDER = { Sr: 0, Jr: 1, So: 2, Fr: 3 };
+
+const ROSTER = ROSTER_RAW.map(([first, last, gender, classYear]) => ({
+  first, last, gender, classYear,
+  grade: GRADE_BY_CLASS_YEAR[classYear] || "",
+  photo: "photos/" + slug(first, last) + ".jpg",
+})).sort((a, b) => {
+  const g = GRADE_SORT_ORDER[a.grade] - GRADE_SORT_ORDER[b.grade];
+  if (g !== 0) return g;
+  return a.first.localeCompare(b.first);
+});
+
+(function render(){
+  const grid = document.getElementById('rosterGrid');
+  const filterBar = document.getElementById('rosterFilters');
+  const GRADE_ORDER = ["Fr","So","Jr","Sr"];
+  const gradesPresent = GRADE_ORDER.filter(g => ROSTER.some(a => a.grade === g));
+
+  function initials(a){ return (a.first[0] + a.last[0]).toUpperCase(); }
+
+  function renderRoster(filter){
+    const list = filter === 'All' ? ROSTER : ROSTER.filter(a => a.grade === filter);
+    grid.innerHTML = list.map(a => `
+      <div class="athlete">
+        <div class="avatar">
+          <span class="init">${initials(a)}</span>
+          <img src="${a.photo}" alt="${a.first} ${a.last}" style="display:none;"
+               onload="this.style.display='block'; this.previousElementSibling.style.display='none';"
+               onerror="this.style.display='none';">
+        </div>
+        <div class="name">${a.first} ${a.last}</div>
+        <div class="meta">${a.grade}</div>
+      </div>
+    `).join('');
+  }
+
+  filterBar.innerHTML = ['All', ...gradesPresent].map(g =>
+    `<button data-grade="${g}" class="${g === 'All' ? 'active' : ''}">${g}</button>`
+  ).join('');
+  filterBar.addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    filterBar.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderRoster(btn.dataset.grade);
+  });
+  renderRoster('All');
+})();
+</script>
+
+</body>
+</html>
