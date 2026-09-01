@@ -29,15 +29,15 @@
     <div class="section-head">
       <div>
         <h2>Roster</h2>
-        <p>Sort by grade, or by 5K PR to see runners in roughly the order they'll pass by.</p>
+        <p>Tap a filter to narrow by grade or sort by general racing time</p>
       </div>
     </div>
 
     <div class="roster-controls">
       <div class="roster-filters" id="gradeFilters"></div>
       <div class="roster-filters" id="sortToggle">
-        <button data-sort="grade" class="active">By Grade</button>
-        <button data-sort="time">By PR</button>
+        <button data-sort="grade">By Grade</button>
+        <button data-sort="time" class="active">By PR</button>
       </div>
     </div>
 
@@ -169,7 +169,7 @@ const ROSTER = ROSTER_RAW.map(([first, last, gender, classYear]) => {
   const gradesPresent = GRADE_ORDER.filter(g => ROSTER.some(a => a.grade === g));
 
   let currentGrade = 'All';
-  let currentSort = 'grade';
+  let currentSort = 'time';
 
   function initials(a){ return (a.first[0] + a.last[0]).toUpperCase(); }
 
