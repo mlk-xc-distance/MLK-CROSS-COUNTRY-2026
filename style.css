@@ -40,12 +40,18 @@
   }
   .nav .team-name{
     font-family:'Oswald', sans-serif;
-    font-size:20px; font-weight:700;
+    font-size:25px; font-weight:700;
     color:var(--chalk);
     letter-spacing:0.02em;
     text-decoration:none;
   }
   .nav .team-name span{color:var(--clay-soft);}
+  .nav .team-name .year{
+    font-size:0.62em;
+    font-weight:500;
+    opacity:0.8;
+    letter-spacing:0.03em;
+  }
   .nav ul{
     list-style:none; display:flex; gap:22px; margin:0; padding:0;
   }
