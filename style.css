@@ -153,8 +153,8 @@
     box-shadow:inset 3px 0 0 var(--clay);
   }
   .meet-name{font-weight:600; font-size:16px;}
-  .meet-name a{color:inherit; text-decoration:none;}
-  .meet-name a:hover{text-decoration:underline;}
+  .meet-name a{color:var(--clay); text-decoration:underline; text-decoration-color:var(--clay-soft); text-underline-offset:2px;}
+  .meet-name a:hover{text-decoration-color:var(--clay);}
   .meet-loc{font-size:14px; color:var(--slate);}
   .meet-parking{font-size:12.5px; color:var(--slate); margin-top:2px; opacity:0.85;}
   .meet-when{text-align:right; font-size:14px; color:var(--slate); white-space:nowrap;}
@@ -196,6 +196,7 @@
   .athlete .meta{font-size:13px; color:var(--slate);}
 
   .roster-filters{display:flex; gap:8px; flex-wrap:wrap;}
+  .roster-controls{display:flex; gap:24px; flex-wrap:wrap; align-items:center; margin-bottom:8px;}
   .roster-filters button{
     font-family:'Source Sans 3', sans-serif;
     font-size:13px; font-weight:600;
