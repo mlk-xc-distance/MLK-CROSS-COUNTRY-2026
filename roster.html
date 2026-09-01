@@ -156,7 +156,7 @@ const ROSTER = ROSTER_RAW.map(([first, last, gender, classYear]) => {
     photo: "photos/" + slug(first, last) + ".jpg",
     prTime,
     prSeconds: timeToSeconds(prTime),
-    manualRank: MANUAL_RANK[`${first} ${last}`] ?? null,
+    manualRank: (MANUAL_RANK[`${first} ${last}`] !== undefined) ? MANUAL_RANK[`${first} ${last}`] : null,
   };
 });
 
@@ -175,7 +175,7 @@ const ROSTER = ROSTER_RAW.map(([first, last, gender, classYear]) => {
 
   function sortList(list){
     if (currentSort === 'time'){
-      const gender = list[0]?.gender;
+      const gender = (list.length > 0) ? list[0].gender : null;
       if (gender === 'f'){
         // Girls: manual rank (coach-given) takes full priority; everyone else alphabetical after.
         return [...list].sort((a, b) => {
