@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Results — MLK Cross Country, Martin Luther King High School</title>
+<meta name="description" content="Meet results for Martin Luther King High School Cross Country.">
+<meta property="og:title" content="MLK Cross Country — Royals">
+<meta property="og:site_name" content="MLK Cross Country">
+<meta property="og:description" content="Meet results for Martin Luther King High School Cross Country.">
+<meta property="og:image" content="https://mlk-xc-distance.github.io/share/og-image.png">
+<meta property="og:url" content="https://mlk-xc-distance.github.io/results.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MLK Cross Country — Royals">
+<meta name="twitter:image" content="https://mlk-xc-distance.github.io/share/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site">
+  <nav class="nav">
+    <a class="team-name" href="index.html">MLK <span>XC</span> <span class="year">2026</span></a>
+    <button class="nav-toggle" onclick="document.getElementById('navlinks').classList.toggle('open')">Menu</button>
+    <ul id="navlinks">
+      <li><a href="index.html#next-meet">Next Meet</a></li>
+      <li><a href="index.html#calendar">Calendar</a></li>
+      <li><a href="roster.html">Roster</a></li>
+      <li><a href="results.html">Results</a></li>
+      <li><a href="index.html#links">Links</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section id="results" style="padding-top:40px;">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Results</h2>
+        <p>How the team did at each meet — or how one athlete's times have progressed.</p>
+      </div>
+    </div>
+
+    <div class="roster-controls">
+      <div class="roster-filters" id="viewToggle">
+        <button data-view="meet" class="active">By Meet</button>
+        <button data-view="athlete">By Athlete</button>
+      </div>
+      <div id="athletePicker" style="display:none;">
+        <select id="athleteSelect" class="athlete-select"></select>
+      </div>
+    </div>
+
+    <div id="resultsList"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>Martin Luther King High School Cross Country · Season 2026</div>
+    <div>Questions? <a href="mailto:brandonally@yahoo.com">brandonally@yahoo.com</a></div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   EDIT ME: add one entry per meet once results are posted.
+   Everything except meetName and date is optional — leave out
+   whatever you don't have (e.g. skip girlsPlace if there's no
+   girls team score, skip topGirls if no girls results yet).
+
+   Example entry:
+   {
+     meetName: "MSCCA Voyles Classic",
+     date: "2026-09-05",
+     boysPlace: "3rd of 12 teams",
+     girlsPlace: "5th of 10 teams",
+     topBoys: [
+       { place: 5, name: "Simon Ally", time: "16:02" },
+       { place: 12, name: "Brent Ferrell", time: "16:41" },
+     ],
+     topGirls: [
+       { place: 8, name: "Eleanor Bonino", time: "21:10" },
+     ],
+     resultsLink: "https://tn.milesplit.com/meets/724605-mscca-voyles-classic-2026/results",
+   },
+   ============================================================ */
+const RESULTS_2025 = [
+  {
+    meetName: "MSCCA Voyles Classic",
+    date: "2025-09-05",
+    season: "2025",
+    topBoys: [
+      { place: 25, name: "Brent Ferrell", time: "16:27.74" },
+      { place: 54, name: "Simon Ally", time: "16:59.31" },
+      { place: 72, name: "Claude Yriart", time: "20:02.95" },
+      { place: 79, name: "Praveen Bhave", time: "20:16.08" },
+      { place: 79, name: "Sachin Bhave", time: "20:16.08" },
+      { place: 112, name: "Ben Lewis", time: "20:52.32" },
+      { place: 115, name: "Dillon Fell", time: "17:59.31" },
+      { place: 143, name: "Campbell Gnetz", time: "21:30.08" },
+      { place: 149, name: "Cooper Wallace", time: "21:32.94" },
+      { place: 162, name: "Will Blocher", time: "22:04.30" },
+      { place: 165, name: "Miles Fowler", time: "18:46.12" },
+      { place: 191, name: "Oscar Spitzer", time: "23:03.50" },
+      { place: 204, name: "Tanner Jones", time: "19:19.62" },
+      { place: 213, name: "Harper Bush", time: "23:47.76" },
+      { place: 227, name: "Winston Walker", time: "24:26.35" },
+      { place: 235, name: "Joseph Lambert", time: "24:55.44" },
+      { place: 250, name: "Liam Durham", time: "25:59.20" },
+      { place: 257, name: "Jack Edmonson", time: "26:40.05" },
+      { place: 258, name: "Brandon Johnson", time: "26:45.51" },
+      { place: 269, name: "Damien Tellez", time: "28:59.26" },
+      { place: 280, name: "Samuel Petrony", time: "20:34.32" },
+    ],
+    topGirls: [
+      { place: 13, name: "Olivia Collins", time: "30:36.92" },
+      { place: 21, name: "Ivy Brame-Blake", time: "36:31.46" },
+      { place: 27, name: "Eleanor Bonino", time: "24:22.53" },
+      { place: 52, name: "Nevaeh Bowers", time: "29:53.03" },
+    ],
+  },
+  {
+    meetName: "The Southern Showcase",
+    date: "2025-09-12",
+    season: "2025",
+    topBoys: [
+      { place: 56, name: "Miles Fowler", time: "19:11.14" },
+      { place: 59, name: "Samuel Petrony", time: "19:16.56" },
+      { place: 83, name: "Tanner Jones", time: "19:55.34" },
+      { place: 107, name: "Claude Yriart", time: "20:58.80" },
+      { place: 109, name: "Brent Ferrell", time: "16:41.13" },
+      { place: 127, name: "Cooper Wallace", time: "21:48.51" },
+      { place: 130, name: "Campbell Gnetz", time: "21:54.79" },
+      { place: 215, name: "Sachin Bhave", time: "17:58.70" },
+      { place: 230, name: "Dillon Fell", time: "18:14.47" },
+    ],
+    topGirls: [
+      { place: 41, name: "Eleanor Bonino", time: "24:09.63" },
+    ],
+  },
+  {
+    meetName: "Dickson Invitational",
+    date: "2025-09-20",
+    season: "2025",
+    topBoys: [
+      { place: 16, name: "Sachin Bhave", time: "18:15.00" },
+      { place: 44, name: "Samuel Petrony", time: "19:18.00" },
+      { place: 46, name: "Cooper Wallace", time: "22:14.00" },
+      { place: 60, name: "Praveen Bhave", time: "22:53.00" },
+      { place: 63, name: "Tanner Jones", time: "19:47.00" },
+      { place: 69, name: "Will Blocher", time: "23:51.00" },
+      { place: 72, name: "Ben Lewis", time: "23:54.00" },
+      { place: 76, name: "Harper Bush", time: "24:11.00" },
+      { place: 82, name: "Claude Yriart", time: "20:47.00" },
+      { place: 89, name: "Winston Walker", time: "25:24.00" },
+      { place: 99, name: "Joseph Lambert", time: "26:19.00" },
+      { place: 101, name: "Liam Durham", time: "26:31.00" },
+      { place: 105, name: "Brandon Johnson", time: "26:58.00" },
+      { place: 113, name: "Damien Tellez", time: "29:00.00" },
+    ],
+    topGirls: [
+      { place: 77, name: "Ruby York", time: "26:26.00" },
+      { place: 82, name: "Kenzie Wilcox", time: "38:25.00" },
+      { place: 83, name: "Ivy Brame-Blake", time: "38:41.00" },
+      { place: 102, name: "Nevaeh Bowers", time: "31:07.00" },
+    ],
+  },
+  {
+    meetName: "Hoka Frank Horton Night Classic",
+    date: "2025-10-03",
+    season: "2025",
+    topBoys: [
+      { place: 34, name: "Brent Ferrell", time: "16:11.80" },
+      { place: 50, name: "Claude Yriart", time: "18:52.00" },
+      { place: 108, name: "Dillon Fell", time: "17:22.90" },
+      { place: 146, name: "Cooper Wallace", time: "20:54.10" },
+      { place: 161, name: "Will Blocher", time: "21:07.70" },
+      { place: 180, name: "Miles Fowler", time: "18:37.20" },
+      { place: 221, name: "Winston Walker", time: "22:13.80" },
+      { place: 267, name: "Oscar Spitzer", time: "23:37.10" },
+      { place: 270, name: "Jack Edmonson", time: "23:46.50" },
+    ],
+    topGirls: [
+      { place: 101, name: "Eleanor Bonino", time: "23:31.10" },
+      { place: 154, name: "Kenzie Wilcox", time: "34:58.00" },
+      { place: 160, name: "Ivy Brame-Blake", time: "35:50.40" },
+      { place: 171, name: "Ruby York", time: "25:54.00" },
+    ],
+  },
+  {
+    meetName: "MSCCA Championships",
+    date: "2025-10-18",
+    season: "2025",
+    topBoys: [
+      { place: 12, name: "Simon Ally", time: "16:58.15" },
+      { place: 14, name: "Brent Ferrell", time: "17:01.49" },
+      { place: 22, name: "Samuel Petrony", time: "19:24.55" },
+      { place: 43, name: "Claude Yriart", time: "20:08.60" },
+      { place: 87, name: "Dillon Fell", time: "18:46.34" },
+      { place: 125, name: "Miles Fowler", time: "19:31.06" },
+      { place: 129, name: "Cooper Wallace", time: "22:48.23" },
+      { place: 135, name: "Winston Walker", time: "22:58.47" },
+      { place: 146, name: "Tanner Jones", time: "19:55.06" },
+      { place: 150, name: "Will Blocher", time: "23:44.02" },
+      { place: 152, name: "Ben Lewis", time: "23:48.03" },
+      { place: 159, name: "Campbell Gnetz", time: "23:51.68" },
+      { place: 180, name: "Harper Bush", time: "24:30.06" },
+      { place: 201, name: "Jack Edmonson", time: "25:50.58" },
+      { place: 221, name: "Brandon Johnson", time: "27:03.15" },
+      { place: 232, name: "Joseph Lambert", time: "28:12.19" },
+    ],
+    topGirls: [
+      { place: 107, name: "Eleanor Bonino", time: "24:21.12" },
+      { place: 122, name: "Kenzie Wilcox", time: "40:32.89" },
+      { place: 125, name: "Ivy Brame-Blake", time: "46:08.81" },
+      { place: 160, name: "Ruby York", time: "27:06.40" },
+      { place: 197, name: "Olivia Collins", time: "29:32.30" },
+      { place: 239, name: "Nevaeh Bowers", time: "33:27.43" },
+    ],
+  },
+  {
+    meetName: "TSSAA DI Class AA XC Section 4 Meet",
+    date: "2025-10-28",
+    season: "2025",
+    topBoys: [
+      { place: 2, name: "Simon Ally", time: "15:40.11" },
+      { place: 2, name: "Tanner Jones", time: "18:21.05" },
+      { place: 3, name: "Claude Yriart", time: "18:36.77" },
+      { place: 7, name: "Brent Ferrell", time: "16:38.28" },
+      { place: 10, name: "Praveen Bhave", time: "19:53.28" },
+      { place: 10, name: "Dillon Fell", time: "17:36.77" },
+      { place: 12, name: "Miles Fowler", time: "17:41.51" },
+      { place: 18, name: "Will Blocher", time: "20:36.74" },
+      { place: 19, name: "Campbell Gnetz", time: "20:41.02" },
+      { place: 20, name: "Harper Bush", time: "20:41.57" },
+      { place: 23, name: "Ben Lewis", time: "20:51.02" },
+      { place: 26, name: "Samuel Petrony", time: "18:29.88" },
+      { place: 26, name: "Winston Walker", time: "20:58.57" },
+      { place: 32, name: "Cooper Wallace", time: "21:29.24" },
+      { place: 39, name: "Joseph Lambert", time: "22:19.10" },
+      { place: 41, name: "Liam Durham", time: "22:28.79" },
+      { place: 42, name: "Jack Edmonson", time: "22:29.30" },
+      { place: 49, name: "Brandon Johnson", time: "23:58.76" },
+      { place: 56, name: "Damien Tellez", time: "25:40.71" },
+    ],
+    topGirls: [
+      { place: 20, name: "Eleanor Bonino", time: "22:49.70" },
+      { place: 33, name: "Ruby York", time: "24:36.54" },
+      { place: 56, name: "Nevaeh Bowers", time: "28:48.34" },
+      { place: 66, name: "Kenzie Wilcox", time: "32:51.91" },
+    ],
+  },
+  {
+    meetName: "TSSAA XC DI Class AA State Championship Meet",
+    date: "2025-11-06",
+    season: "2025",
+    topBoys: [
+      { place: 7, name: "Simon Ally", time: "16:14.52" },
+      { place: 8, name: "Brent Ferrell", time: "16:20.74" },
+      { place: 49, name: "Miles Fowler", time: "17:58.76" },
+      { place: 67, name: "Dillon Fell", time: "18:19.10" },
+      { place: 102, name: "Samuel Petrony", time: "19:06.10" },
+    ],
+    topGirls: [
+      { place: 88, name: "Eleanor Bonino", time: "23:55.54" },
+    ],
+  },
+  {
+    meetName: "Nike Cross Nationals Southeast Regional",
+    date: "2025-11-22",
+    season: "2025",
+    topBoys: [
+      { place: 43, name: "Simon Ally", time: "16:21.20" },
+      { place: 226, name: "Dillon Fell", time: "17:47.20" },
+      { place: 278, name: "Miles Fowler", time: "18:34.90" },
+      { place: 294, name: "Claude Yriart", time: "19:16.30" },
+      { place: 299, name: "Praveen Bhave", time: "19:49.20" },
+      { place: 309, name: "Cooper Wallace", time: "21:02.40" },
+      { place: 314, name: "Will Blocher", time: "22:03.90" },
+    ],
+    topGirls: [
+      { place: 195, name: "Eleanor Bonino", time: "24:01.90" },
+      { place: 304, name: "Ivy Brame-Blake", time: "34:08.70" },
+    ],
+  },
+];
+
+const RESULTS = [
+];
+
+const ALL_RESULTS = [...RESULTS, ...RESULTS_2025];
+
+(function render(){
+  const list = document.getElementById('resultsList');
+  const viewToggle = document.getElementById('viewToggle');
+  const athletePicker = document.getElementById('athletePicker');
+  const athleteSelect = document.getElementById('athleteSelect');
+  let currentView = 'meet';
+
+  function fmtDate(iso){
+    const d = new Date(iso + "T00:00:00");
+    return d.toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric', year:'numeric' });
+  }
+
+  function finisherRows(finishers){
+    if (!finishers || finishers.length === 0) return '';
+    return finishers.map(f => `
+      <div class="finisher-row">
+        <div class="finisher-place">${f.place}</div>
+        <div class="finisher-name">${f.name}</div>
+        <div class="finisher-time">${f.time}</div>
+      </div>
+    `).join('');
+  }
+
+  function renderByMeet(){
+    if (ALL_RESULTS.length === 0){
+      list.innerHTML = `<div class="callout">No results posted yet — check back after race day.</div>`;
+      return;
+    }
+    const sorted = [...ALL_RESULTS].sort((a, b) => b.date.localeCompare(a.date));
+    list.innerHTML = sorted.map(r => `
+      <div class="link-card" style="display:block; margin-bottom:18px; cursor:default;">
+        <div class="t" style="font-size:18px; margin-bottom:2px;">${r.meetName}${r.season ? ` <span style="font-size:12px; font-weight:600; color:var(--slate); background:var(--stone); border-radius:3px; padding:2px 8px; vertical-align:middle;">${r.season} season</span>` : ''}</div>
+        <div class="d" style="margin-bottom:12px;">${fmtDate(r.date)}</div>
+        <div class="meet-facts" style="border-top:none; padding-top:0; margin-top:0; grid-template-columns:repeat(auto-fill, minmax(160px, 1fr));">
+          ${r.boysPlace ? `<div><div class="label" style="color:var(--slate);">Boys Team</div><div class="value" style="color:var(--pine);">${r.boysPlace}</div></div>` : ''}
+          ${r.girlsPlace ? `<div><div class="label" style="color:var(--slate);">Girls Team</div><div class="value" style="color:var(--pine);">${r.girlsPlace}</div></div>` : ''}
+        </div>
+        ${r.topBoys ? `<h4 class="link-subhead" style="margin-top:18px;">Top Boys Finishers</h4>${finisherRows(r.topBoys)}` : ''}
+        ${r.topGirls ? `<h4 class="link-subhead" style="margin-top:18px;">Top Girls Finishers</h4>${finisherRows(r.topGirls)}` : ''}
+        ${r.resultsLink ? `<div style="margin-top:14px;"><a href="${r.resultsLink}" target="_blank" rel="noopener" style="color:var(--clay); font-weight:600; text-decoration:underline;">Full results →</a></div>` : ''}
+      </div>
+    `).join('');
+  }
+
+  function allAthleteNames(){
+    const names = new Set();
+    ALL_RESULTS.forEach(r => {
+      (r.topBoys || []).forEach(f => names.add(f.name));
+      (r.topGirls || []).forEach(f => names.add(f.name));
+    });
+    return [...names].sort((a, b) => a.localeCompare(b));
+  }
+
+  function racesFor(name){
+    const races = [];
+    [...ALL_RESULTS].sort((a, b) => a.date.localeCompare(b.date)).forEach(r => {
+      const hit = [...(r.topBoys || []), ...(r.topGirls || [])].find(f => f.name === name);
+      if (hit) races.push({ meetName: r.meetName, date: r.date, place: hit.place, time: hit.time, season: r.season });
+    });
+    return races;
+  }
+
+  function renderByAthlete(){
+    const names = allAthleteNames();
+    if (names.length === 0){
+      list.innerHTML = `<div class="callout">No results posted yet — check back after race day.</div>`;
+      athletePicker.style.display = 'none';
+      return;
+    }
+    athletePicker.style.display = 'block';
+    if (!athleteSelect.dataset.built){
+      athleteSelect.innerHTML = names.map(n => `<option value="${n}">${n}</option>`).join('');
+      athleteSelect.dataset.built = '1';
+      athleteSelect.addEventListener('change', renderByAthlete);
+    }
+    const selected = athleteSelect.value || names[0];
+    const races = racesFor(selected);
+    list.innerHTML = `
+      <div class="link-card" style="display:block; cursor:default;">
+        <div class="t" style="font-size:18px; margin-bottom:14px;">${selected} — Season Progression</div>
+        ${races.map(r => `
+          <div class="finisher-row">
+            <div class="finisher-name" style="flex:1;">${r.meetName}<div style="font-size:12px; color:var(--slate); font-weight:400;">${fmtDate(r.date)}${r.season ? ` · ${r.season} season` : ''}</div></div>
+            <div class="finisher-place">${r.place}</div>
+            <div class="finisher-time">${r.time}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  viewToggle.addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    viewToggle.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentView = btn.dataset.view;
+    athletePicker.style.display = currentView === 'athlete' ? 'block' : 'none';
+    if (currentView === 'meet') renderByMeet(); else renderByAthlete();
+  });
+
+  renderByMeet();
+})();
+</script>
+
+</body>
+</html>
