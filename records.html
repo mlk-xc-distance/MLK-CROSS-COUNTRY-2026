@@ -130,7 +130,7 @@ const GIRLS_RECORDS = [
           ${records.map((r, i) => `
             <div class="results-table-row${i % 2 === 1 ? ' alt' : ''}${r.rank === 1 ? ' is-pr' : ''}">
               <div class="rt-name">
-                <a href="results.html" class="rt-name-link">${r.first} ${r.last}</a> <span class="season-badge">Class of ${r.classYear}</span>
+                ${r.classYear >= 2027 ? `<a href="results.html" class="rt-name-link">${r.first} ${r.last}</a>` : `<span class="rt-name-plain">${r.first} ${r.last}</span>`} <span class="season-badge">Class of ${r.classYear}</span>
                 <div class="rt-sub">${r.meet} · ${r.grade} · ${fmtDate(r.date)}${r.location ? ` · ${r.location}` : ''}</div>
               </div>
               <div class="rt-place">${r.rank}</div>
