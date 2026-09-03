@@ -335,8 +335,8 @@
   .rt-sub{font-size:11.5px; color:var(--slate); font-weight:400; margin-top:1px;}
   .rt-time{font-weight:600; color:var(--pine); text-align:right; font-variant-numeric:tabular-nums;}
 
-  #resultsList .results-table-head div:nth-child(1),
-  #resultsList .results-table-row .rt-place{text-align:left;}
+  .results-table-head div:nth-child(1),
+  .results-table-row .rt-place{text-align:left;}
 
   .results-table.athlete-view .results-table-head,
   .results-table.athlete-view .results-table-row{

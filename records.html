@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All-Time Records — MLK Cross Country, Martin Luther King High School</title>
+<meta name="description" content="All-time top performances for Martin Luther King High School Cross Country.">
+<meta property="og:title" content="MLK Cross Country — Royals">
+<meta property="og:site_name" content="MLK Cross Country">
+<meta property="og:description" content="All-time top performances for Martin Luther King High School Cross Country.">
+<meta property="og:image" content="https://mlk-xc-distance.github.io/share/og-image.png">
+<meta property="og:url" content="https://mlk-xc-distance.github.io/records.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MLK Cross Country — Royals">
+<meta name="twitter:image" content="https://mlk-xc-distance.github.io/share/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site">
+  <nav class="nav">
+    <a class="team-name" href="index.html">MLK <span>XC</span> <span class="year">2026</span></a>
+    <button class="nav-toggle" onclick="document.getElementById('navlinks').classList.toggle('open')">Menu</button>
+    <ul id="navlinks">
+      <li><a href="index.html#next-meet">Next Meet</a></li>
+      <li><a href="index.html#calendar">Calendar</a></li>
+      <li><a href="roster.html">Roster</a></li>
+      <li><a href="results.html">Results</a></li>
+      <li><a href="records.html">Records</a></li>
+      <li><a href="index.html#links">Links</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section id="records" style="padding-top:40px;">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>All-Time Top 25</h2>
+        <p>The fastest 5K times in program history, boys and girls.</p>
+      </div>
+    </div>
+
+    <div class="roster-controls">
+      <div class="roster-filters" id="sexToggle">
+        <button data-sex="boys" class="active">Boys</button>
+        <button data-sex="girls">Girls</button>
+      </div>
+    </div>
+
+    <div id="recordsList"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>Martin Luther King High School Cross Country · Season 2026</div>
+    <div>Questions? <a href="mailto:brandonally@yahoo.com">brandonally@yahoo.com</a></div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   EDIT ME: All-time top performers, fastest to slowest.
+   grade = grade level (Fr/So/Jr/Sr) at the time the race was run.
+   date = "YYYY-MM-DD". location is free text — as specific or
+   general as you have (e.g. "Sanders Ferry" is fine if that's
+   all that's known for an older record).
+   ============================================================ */
+const BOYS_RECORDS = [
+  { rank: 1, first: "Miles", last: "Ally", classYear: 2021, time: "15:08.3", meet: "Coach Wood", grade: "Sr", date: "2020-10-17", location: "McIntosh Nature Preserve, Whitesville, GA" },
+  { rank: 2, first: "Wyatt", last: "Boling", classYear: 2026, time: "15:26.4", meet: "RunningLane Champs", grade: "Sr", date: "2025-12-06", location: "John Hunt Park, Huntsville, AL" },
+  { rank: 3, first: "Simon", last: "Ally", classYear: 2027, time: "15:40.1", meet: "TSSAA D1 AA Region 4", grade: "Jr", date: "2025-10-29", location: "Sanders Ferry" },
+  { rank: 4, first: "Sam", last: "Klockenkemper", classYear: 2013, time: "15:46.1", meet: "Trinity/Valkyrie", grade: "Sr", date: "2012-09-15", location: "Tom Sawyer Park" },
+  { rank: 5, first: "Ryan", last: "Bailey", classYear: 2003, time: "15:54.5", meet: "Chicasaw", grade: "Sr", date: "2002-09-05", location: "Oakville Indian Mounds, Oakville, AL" },
+  { rank: 6, first: "Korben", last: "Lewis", classYear: 2025, time: "15:54.7", meet: "TSSAA State Meet", grade: "Sr", date: "2024-11-07", location: "Sanders Ferry" },
+  { rank: 7, first: "Brent", last: "Ferrell", classYear: 2027, time: "16:11.8", meet: "Frank Horton", grade: "Jr", date: "2025-10-04", location: "Shelby Farms, Memphis" },
+  { rank: 8, first: "Jared", last: "Clark", classYear: 2016, time: "16:28.9", meet: "MSCCA Championships", grade: "Sr", date: "2015-10-17", location: "Sharps Springs, Smyrna" },
+  { rank: 9, first: "Colter", last: "Lewis", classYear: 2026, time: "16:33.3", meet: "TSSAA State Meet", grade: "Sr", date: "2025-11-06", location: "Shelby Farms, Memphis" },
+  { rank: 10, first: "Micah", last: "Wasserman", classYear: 2010, time: "16:38.5", meet: "Chicasaw", grade: "Jr", date: "2008-09-06", location: "Oakville Indian Mounds, Oakville, AL" },
+  { rank: 11, first: "London", last: "Craddock", classYear: 2021, time: "16:42.6", meet: "Frank Horton", grade: "Sr", date: "2020-09-26", location: "Shelby Farms, Memphis" },
+  { rank: 12, first: "Christopher", last: "Hornsby", classYear: 2015, time: "16:42.8", meet: "Jesse Owens", grade: "Sr", date: "2014-10-04", location: "Oakville Indian Mounds, Oakville, AL" },
+  { rank: 13, first: "Ryan", last: "Graves", classYear: 2010, time: "16:45.4", meet: "Chicasaw", grade: "Jr", date: "2008-09-06", location: "Oakville Indian Mounds, Oakville, AL" },
+  { rank: 14, first: "David", last: "Gilmore", classYear: 2011, time: "16:50.4", meet: "Jesse Owens", grade: "Sr", date: "2010-10-02", location: "Oakville Indian Mounds, Oakville, AL" },
+  { rank: 15, first: "Jack", last: "Forte", classYear: 2015, time: "16:51.0", meet: "Foot Locker South", grade: "Sr", date: "2014-11-29", location: "McAlpine Park, Charlotte, NC" },
+  { rank: 16, first: "Steven", last: "Wathen", classYear: 2008, time: "16:53.9", meet: "TSSAA State Meet", grade: "Sr", date: "2007-11-03", location: "Steeplechase" },
+  { rank: 17, first: "Noah", last: "Daniel", classYear: 2026, time: "16:54.0", meet: "TSSAA State Meet", grade: "Jr", date: "2024-11-07", location: "Sanders Ferry" },
+  { rank: 18, first: "Berket", last: "Mesele", classYear: 2019, time: "16:54.1", meet: "TSSAA Region 6 Large", grade: "Sr", date: "2018-10-25", location: "Steeplechase" },
+  { rank: 19, first: "Sam", last: "Brobeck", classYear: 2011, time: "16:55.7", meet: "Jesse Owens", grade: "Sr", date: "2010-10-02", location: "Oakville Indian Mounds, Oakville, AL" },
+  { rank: 20, first: "John", last: "Gilpin", classYear: 2010, time: "16:55.7", meet: "TSSAA Region 5 A-AA", grade: "Jr", date: "2008-10-23", location: "Steeplechase" },
+  { rank: 21, first: "Tyler", last: "Masters", classYear: 2011, time: "16:57.4", meet: "Jesse Owens", grade: "Sr", date: "2010-10-02", location: "Oakville Indian Mounds, Oakville, AL" },
+  { rank: 22, first: "Nick", last: "Winn", classYear: 2008, time: "16:58.0", meet: "Foot Locker South", grade: "Sr", date: "2007-11-24", location: "McAlpine Park, Charlotte, NC" },
+  { rank: 23, first: "Willie", last: "Clark", classYear: 2011, time: "17:05.1", meet: "Jesse Owens", grade: "Sr", date: "2010-10-02", location: "Oakville Indian Mounds, Oakville, AL" },
+  { rank: 24, first: "Jonathan", last: "Gilbreath", classYear: 2009, time: "17:14.1", meet: "Chicasaw", grade: "Sr", date: "2008-09-06", location: "Oakville Indian Mounds, Oakville, AL" },
+  { rank: 25, first: "Jesse", last: "Small", classYear: 2020, time: "17:16.0", meet: "Wingfoot XC Classic", grade: "Sr", date: "2019-09-20", location: "Sam Smith Park, Cartersville, GA" },
+];
+/* ============================================================
+   EDIT ME: Girls all-time top 25 — add here in the same format
+   once available.
+   ============================================================ */
+const GIRLS_RECORDS = [
+];
+
+(function render(){
+  const list = document.getElementById('recordsList');
+  const sexToggle = document.getElementById('sexToggle');
+  let currentSex = 'boys';
+
+  function fmtDate(iso){
+    const d = new Date(iso + "T00:00:00");
+    return d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+  }
+
+  function render_list(){
+    const records = currentSex === 'boys' ? BOYS_RECORDS : GIRLS_RECORDS;
+    if (records.length === 0){
+      list.innerHTML = `<div class="callout">No ${currentSex} all-time list yet — check back once it's added.</div>`;
+      return;
+    }
+    list.innerHTML = `
+      <div class="link-card" style="display:block; cursor:default;">
+        <div class="results-table athlete-view">
+          <div class="results-table-head">
+            <div>Name</div><div>Rank</div><div>Time</div>
+          </div>
+          ${records.map((r, i) => `
+            <div class="results-table-row${i % 2 === 1 ? ' alt' : ''}${r.rank === 1 ? ' is-pr' : ''}">
+              <div class="rt-name">
+                <a href="results.html" class="rt-name-link">${r.first} ${r.last}</a> <span class="season-badge">Class of ${r.classYear}</span>
+                <div class="rt-sub">${r.meet} · ${r.grade} · ${fmtDate(r.date)}${r.location ? ` · ${r.location}` : ''}</div>
+              </div>
+              <div class="rt-place">${r.rank}</div>
+              <div class="rt-time">${r.rank === 1 ? `<span class="pr-time-box">${r.time}<span class="pr-tag">#1</span></span>` : r.time}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  sexToggle.addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    sexToggle.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentSex = btn.dataset.sex;
+    render_list();
+  });
+
+  render_list();
+})();
+</script>
+
+</body>
+</html>
