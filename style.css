@@ -272,21 +272,48 @@
     margin-top:6px;
   }
 
-  .finisher-row{
-    display:flex;
+  .season-badge{
+    font-size:12px; font-weight:600; color:var(--slate);
+    background:var(--stone); border-radius:3px; padding:2px 8px;
+    vertical-align:middle; white-space:nowrap;
+  }
+
+  .results-columns{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+  }
+  @media (max-width:640px){
+    .results-columns{grid-template-columns:1fr;}
+  }
+
+  .results-table{border:1px solid var(--line); border-radius:3px; overflow:hidden;}
+  .results-table-head{
+    display:grid; grid-template-columns:52px 1fr 68px;
+    background:var(--pine); color:var(--chalk);
+    font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.03em;
+    padding:7px 10px;
+  }
+  .results-table-row{
+    display:grid; grid-template-columns:52px 1fr 68px;
     align-items:center;
-    gap:14px;
-    padding:8px 0;
-    border-bottom:1px solid var(--line);
+    padding:7px 10px;
+    font-size:13.5px;
+    background:var(--chalk);
   }
-  .finisher-row:last-child{border-bottom:none;}
-  .finisher-place{
-    font-family:'Oswald', sans-serif;
-    font-size:16px; font-weight:600; color:var(--slate);
-    width:28px; flex-shrink:0; text-align:right;
+  .results-table-row.alt{background:var(--stone);}
+  .rt-place{font-family:'Oswald', sans-serif; font-weight:600; color:var(--slate);}
+  .rt-name{font-weight:600; color:var(--pine); overflow-wrap:break-word;}
+  .rt-sub{font-size:11.5px; color:var(--slate); font-weight:400; margin-top:1px;}
+  .rt-time{font-weight:600; color:var(--pine); text-align:right; font-variant-numeric:tabular-nums;}
+
+  #resultsList .results-table-head div:nth-child(1),
+  #resultsList .results-table-row .rt-place{text-align:left;}
+
+  .results-table.athlete-view .results-table-head,
+  .results-table.athlete-view .results-table-row{
+    grid-template-columns:1fr 56px 68px;
   }
-  .finisher-name{flex:1; font-size:14px; font-weight:600; color:var(--pine);}
-  .finisher-time{font-size:14px; color:var(--slate); font-weight:600;}
 
   .athlete-select{
     font-family:'Source Sans 3', sans-serif;
