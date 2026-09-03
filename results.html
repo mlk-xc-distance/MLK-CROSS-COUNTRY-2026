@@ -50,6 +50,7 @@
       <div class="roster-filters" id="viewToggle">
         <button data-view="meet" class="active">By Meet</button>
         <button data-view="athlete">By Athlete</button>
+        <button data-view="pr">Team PR</button>
       </div>
       <div id="athletePicker" style="display:none;">
         <select id="athleteSelect" class="athlete-select"></select>
@@ -723,6 +724,59 @@ const ALL_RESULTS = [...RESULTS, ...RESULTS_HISTORY];
     list.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
+  function prLeaderboard(){
+    const board = {}; // name -> { gender, seconds, time, meetName, date, location }
+    ALL_RESULTS.forEach(r => {
+      [["boys", r.topBoys], ["girls", r.topGirls]].forEach(([gender, finishers]) => {
+        (finishers || []).forEach(f => {
+          const secs = timeToSeconds(f.time);
+          if (!board[f.name] || secs < board[f.name].seconds){
+            board[f.name] = { gender, seconds: secs, time: f.time, meetName: r.meetName, date: r.date, location: r.location };
+          }
+        });
+      });
+    });
+    const boys = Object.entries(board).filter(([, v]) => v.gender === 'boys').sort((a, b) => a[1].seconds - b[1].seconds);
+    const girls = Object.entries(board).filter(([, v]) => v.gender === 'girls').sort((a, b) => a[1].seconds - b[1].seconds);
+    return { boys, girls };
+  }
+
+  function prTable(entries){
+    if (entries.length === 0) return '<div class="callout">No results yet.</div>';
+    return `
+      <div class="results-table athlete-view">
+        <div class="results-table-head"><div>Name</div><div>Rank</div><div>Time</div></div>
+        ${entries.map(([name, v], i) => `
+          <div class="results-table-row${i % 2 === 1 ? ' alt' : ''}">
+            <div class="rt-name">
+              <a href="javascript:void(0)" class="rt-name-link" onclick="goToAthlete('${name.replace(/'/g, "\\'")}')">${name}</a>
+              <div class="rt-sub">${v.meetName} · ${fmtDate(v.date)}${v.location ? ` · ${v.location}` : ''}</div>
+            </div>
+            <div class="rt-place">${i + 1}</div>
+            <div class="rt-time">${v.time}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  function renderByPR(){
+    if (ALL_RESULTS.length === 0){
+      list.innerHTML = `<div class="callout">No results posted yet — check back after race day.</div>`;
+      return;
+    }
+    const { boys, girls } = prLeaderboard();
+    list.innerHTML = `
+      <div class="link-card" style="display:block; cursor:default;">
+        <div class="t" style="font-size:18px; margin-bottom:14px;">Team PR Leaderboard</div>
+        <div class="results-columns">
+          <div><h4 class="link-subhead">Boys</h4>${prTable(boys)}</div>
+          <div><h4 class="link-subhead">Girls</h4>${prTable(girls)}</div>
+        </div>
+      </div>
+    `;
+  }
+
   viewToggle.addEventListener('click', (e) => {
     const btn = e.target.closest('button');
     if (!btn) return;
@@ -730,7 +784,9 @@ const ALL_RESULTS = [...RESULTS, ...RESULTS_HISTORY];
     btn.classList.add('active');
     currentView = btn.dataset.view;
     athletePicker.style.display = currentView === 'athlete' ? 'block' : 'none';
-    if (currentView === 'meet') renderByMeet(); else renderByAthlete();
+    if (currentView === 'meet') renderByMeet();
+    else if (currentView === 'athlete') renderByAthlete();
+    else renderByPR();
   });
 
   renderByMeet();
