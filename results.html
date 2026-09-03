@@ -553,14 +553,21 @@ const ALL_RESULTS = [...RESULTS, ...RESULTS_HISTORY];
     return d.toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric', year:'numeric' });
   }
 
+  function timeToSeconds(t){
+    const parts = t.split(":");
+    if (parts.length === 2) return Number(parts[0]) * 60 + Number(parts[1]);
+    return Number(t);
+  }
+
   function finisherTable(finishers){
     if (!finishers || finishers.length === 0) return '';
+    const sorted = [...finishers].sort((a, b) => timeToSeconds(a.time) - timeToSeconds(b.time));
     return `
       <div class="results-table">
         <div class="results-table-head">
           <div>Place</div><div>Name</div><div>Time</div>
         </div>
-        ${finishers.map((f, i) => `
+        ${sorted.map((f, i) => `
           <div class="results-table-row${i % 2 === 1 ? ' alt' : ''}">
             <div class="rt-place">${f.place}</div>
             <div class="rt-name">${f.name}</div>
