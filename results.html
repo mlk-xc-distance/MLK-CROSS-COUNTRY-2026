@@ -568,13 +568,17 @@ const ALL_RESULTS = [...RESULTS, ...RESULTS_HISTORY];
         <div class="results-table-head">
           <div>Place</div><div>Name</div><div>Time</div>
         </div>
-        ${sorted.map((f, i) => `
+        ${sorted.map((f, i) => {
+          const allTimes = racesFor(f.name).map(r => timeToSeconds(r.time));
+          const isPR = allTimes.length && timeToSeconds(f.time) === Math.min(...allTimes);
+          return `
           <div class="results-table-row${i % 2 === 1 ? ' alt' : ''}">
             <div class="rt-place">${f.place}</div>
-            <div class="rt-name">${f.name}</div>
-            <div class="rt-time">${f.time}</div>
+            <div class="rt-name"><a href="javascript:void(0)" class="rt-name-link" onclick="goToAthlete('${f.name.replace(/'/g, "\\'")}')">${f.name}</a></div>
+            <div class="rt-time">${f.time}${isPR ? ' <span class="pr-badge">PR</span>' : ''}</div>
           </div>
-        `).join('')}
+        `;
+        }).join('')}
       </div>
     `;
   }
@@ -632,10 +636,14 @@ const ALL_RESULTS = [...RESULTS, ...RESULTS_HISTORY];
     if (!athleteSelect.dataset.built){
       athleteSelect.innerHTML = names.map(n => `<option value="${n}">${n}</option>`).join('');
       athleteSelect.dataset.built = '1';
+    }
+    if (!athleteSelect.dataset.listenerAdded){
       athleteSelect.addEventListener('change', renderByAthlete);
+      athleteSelect.dataset.listenerAdded = '1';
     }
     const selected = athleteSelect.value || names[0];
     const races = racesFor(selected);
+    const prSeconds = races.length ? Math.min(...races.map(r => timeToSeconds(r.time))) : null;
     list.innerHTML = `
       <div class="link-card" style="display:block; cursor:default;">
         <div class="t" style="font-size:18px; margin-bottom:14px;">${selected} — Race History</div>
@@ -647,13 +655,30 @@ const ALL_RESULTS = [...RESULTS, ...RESULTS_HISTORY];
             <div class="results-table-row${i % 2 === 1 ? ' alt' : ''}">
               <div class="rt-name">${r.meetName}<div class="rt-sub">${fmtDate(r.date)}${r.season ? ` · ${r.season} season` : ''}</div></div>
               <div class="rt-place">${r.place}</div>
-              <div class="rt-time">${r.time}</div>
+              <div class="rt-time">${r.time}${timeToSeconds(r.time) === prSeconds ? ' <span class="pr-badge">PR</span>' : ''}</div>
             </div>
           `).join('')}
         </div>
       </div>
     `;
   }
+
+  window.goToAthlete = function(name){
+    const names = allAthleteNames();
+    athleteSelect.innerHTML = names.map(n => `<option value="${n}">${n}</option>`).join('');
+    athleteSelect.dataset.built = '1';
+    athleteSelect.value = name;
+    if (!athleteSelect.dataset.listenerAdded){
+      athleteSelect.addEventListener('change', renderByAthlete);
+      athleteSelect.dataset.listenerAdded = '1';
+    }
+    viewToggle.querySelectorAll('button').forEach(b => {
+      b.classList.toggle('active', b.dataset.view === 'athlete');
+    });
+    athletePicker.style.display = 'block';
+    renderByAthlete();
+    list.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   viewToggle.addEventListener('click', (e) => {
     const btn = e.target.closest('button');
