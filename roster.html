@@ -224,7 +224,7 @@ const ROSTER = ROSTER_RAW.map(([first, last, gender, classYear]) => {
       <div class="athlete">
         <div class="avatar">
           <span class="init">${initials(a)}</span>
-          <img src="${a.photo}" alt="${a.first} ${a.last}" loading="lazy" style="display:none;"
+          <img src="${a.photo}" alt="${a.first} ${a.last}" style="display:none;"
                onload="this.style.display='block'; this.previousElementSibling.style.display='none';"
                onerror="this.style.display='none';">
         </div>
