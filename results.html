@@ -680,14 +680,18 @@ const ALL_RESULTS = [...RESULTS, ...RESULTS_HISTORY];
     }
     athletePicker.style.display = 'block';
     if (!athleteSelect.dataset.built){
-      athleteSelect.innerHTML = names.map(n => `<option value="${n}">${n}</option>`).join('');
+      athleteSelect.innerHTML = `<option value="">Choose an athlete…</option>` + names.map(n => `<option value="${n}">${n}</option>`).join('');
       athleteSelect.dataset.built = '1';
     }
     if (!athleteSelect.dataset.listenerAdded){
       athleteSelect.addEventListener('change', renderByAthlete);
       athleteSelect.dataset.listenerAdded = '1';
     }
-    const selected = athleteSelect.value || names[0];
+    const selected = athleteSelect.value;
+    if (!selected){
+      list.innerHTML = `<div class="callout">Choose an athlete above to see their race history.</div>`;
+      return;
+    }
     const races = racesFor(selected);
     const prSeconds = races.length ? Math.min(...races.map(r => timeToSeconds(r.time))) : null;
     list.innerHTML = `
@@ -714,7 +718,7 @@ const ALL_RESULTS = [...RESULTS, ...RESULTS_HISTORY];
 
   window.goToAthlete = function(name){
     const names = allAthleteNames();
-    athleteSelect.innerHTML = names.map(n => `<option value="${n}">${n}</option>`).join('');
+    athleteSelect.innerHTML = `<option value="">Choose an athlete…</option>` + names.map(n => `<option value="${n}">${n}</option>`).join('');
     athleteSelect.dataset.built = '1';
     athleteSelect.value = name;
     if (!athleteSelect.dataset.listenerAdded){
