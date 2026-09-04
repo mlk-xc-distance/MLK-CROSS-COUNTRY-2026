@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <title>Results — MLK Cross Country, Martin Luther King High School</title>
 <meta name="description" content="Meet results for Martin Luther King High School Cross Country.">
 <meta property="og:title" content="MLK Cross Country — Royals">
@@ -20,16 +24,17 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<a href="#results" class="skip-link">Skip to main content</a>
 
 <header class="site">
   <nav class="nav">
     <a class="team-name" href="index.html">MLK <span>XC</span> <span class="year">2026</span></a>
-    <button class="nav-toggle" onclick="document.getElementById('navlinks').classList.toggle('open')">Menu</button>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="navlinks" onclick="const el=document.getElementById('navlinks'); const open=el.classList.toggle('open'); this.setAttribute('aria-expanded', open);">Menu</button>
     <ul id="navlinks">
       <li><a href="index.html#next-meet">Next Meet</a></li>
       <li><a href="index.html#calendar">Calendar</a></li>
       <li><a href="roster.html">Roster</a></li>
-      <li><a href="results.html">Results</a></li>
+      <li><a href="results.html" class="nav-current">Results</a></li>
       <li><a href="records.html">Records</a></li>
       <li><a href="index.html#links">Links</a></li>
     </ul>
@@ -47,13 +52,16 @@
     </div>
 
     <div class="roster-controls">
-      <div class="roster-filters" id="viewToggle">
-        <button data-view="meet" class="active">By Meet</button>
-        <button data-view="athlete">By Athlete</button>
-        <button data-view="pr">By PR</button>
+      <div class="roster-filters" id="viewToggle" role="group" aria-label="Results view">
+        <button data-view="meet" class="active" aria-pressed="true">By Meet</button>
+        <button data-view="athlete" aria-pressed="false">By Athlete</button>
+        <button data-view="pr" aria-pressed="false">By PR</button>
       </div>
       <div id="athletePicker" style="display:none;">
         <select id="athleteSelect" class="athlete-select"></select>
+      </div>
+      <div id="searchWrap" style="flex:1; min-width:180px;">
+        <input type="search" id="resultsSearch" placeholder="Search meets or athletes…" aria-label="Search meets or athletes" class="athlete-select" style="width:100%; cursor:text;">
       </div>
     </div>
 
@@ -614,12 +622,27 @@ const ALL_RESULTS = [...RESULTS, ...RESULTS_HISTORY];
     `;
   }
 
+  function meetMatchesSearch(r, query){
+    if (!query) return true;
+    const q = query.toLowerCase();
+    if (r.meetName.toLowerCase().includes(q)) return true;
+    if (r.location && r.location.toLowerCase().includes(q)) return true;
+    const allFinishers = [...(r.topBoys || []), ...(r.topGirls || [])];
+    return allFinishers.some(f => f.name.toLowerCase().includes(q));
+  }
+
   function renderByMeet(){
     if (ALL_RESULTS.length === 0){
       list.innerHTML = `<div class="callout">No results posted yet — check back after race day.</div>`;
       return;
     }
-    const sorted = [...ALL_RESULTS].sort((a, b) => b.date.localeCompare(a.date));
+    const query = (document.getElementById('resultsSearch').value || '').trim();
+    const sorted = [...ALL_RESULTS].filter(r => meetMatchesSearch(r, query)).sort((a, b) => b.date.localeCompare(a.date));
+
+    if (sorted.length === 0){
+      list.innerHTML = `<div class="callout">No meets or athletes match "${query}".</div>`;
+      return;
+    }
 
     const seasons = [];
     sorted.forEach(r => {
@@ -718,6 +741,7 @@ const ALL_RESULTS = [...RESULTS, ...RESULTS_HISTORY];
     }
     viewToggle.querySelectorAll('button').forEach(b => {
       b.classList.toggle('active', b.dataset.view === 'athlete');
+      b.setAttribute('aria-pressed', b.dataset.view === 'athlete' ? 'true' : 'false');
     });
     athletePicker.style.display = 'block';
     renderByAthlete();
@@ -780,13 +804,19 @@ const ALL_RESULTS = [...RESULTS, ...RESULTS_HISTORY];
   viewToggle.addEventListener('click', (e) => {
     const btn = e.target.closest('button');
     if (!btn) return;
-    viewToggle.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    viewToggle.querySelectorAll('button').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
     btn.classList.add('active');
+    btn.setAttribute('aria-pressed', 'true');
     currentView = btn.dataset.view;
     athletePicker.style.display = currentView === 'athlete' ? 'block' : 'none';
+    document.getElementById('searchWrap').style.display = currentView === 'meet' ? 'block' : 'none';
     if (currentView === 'meet') renderByMeet();
     else if (currentView === 'athlete') renderByAthlete();
     else renderByPR();
+  });
+
+  document.getElementById('resultsSearch').addEventListener('input', () => {
+    if (currentView === 'meet') renderByMeet();
   });
 
   renderByMeet();

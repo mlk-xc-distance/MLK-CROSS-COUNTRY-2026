@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <title>MLK Cross Country — Martin Luther King High School Royals</title>
 <meta name="description" content="Meets, roster, and team links for Martin Luther King High School Cross Country.">
 <meta property="og:title" content="MLK Cross Country — Royals">
@@ -20,11 +24,12 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<a href="#next-meet" class="skip-link">Skip to main content</a>
 
 <header class="site">
   <nav class="nav">
     <a class="team-name" href="index.html">MLK <span>XC</span> <span class="year">2026</span></a>
-    <button class="nav-toggle" onclick="document.getElementById('navlinks').classList.toggle('open')">Menu</button>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="navlinks" onclick="const el=document.getElementById('navlinks'); const open=el.classList.toggle('open'); this.setAttribute('aria-expanded', open);">Menu</button>
     <ul id="navlinks">
       <li><a href="#next-meet">Next Meet</a></li>
       <li><a href="#calendar">Calendar</a></li>
@@ -252,9 +257,12 @@ const MEETS = [
   const hero = document.getElementById('heroContent');
   if (upcoming.length){
     const next = upcoming[0];
+    const daysUntil = daysOut(next.date);
+    const countdownText = daysUntil === 0 ? "Today!" : daysUntil === 1 ? "Tomorrow!" : `${daysUntil} days away`;
     hero.innerHTML = `
       <div class="kicker">Next meet</div>
       <h1>${meetNameHtml(next)} — ${next.location}</h1>
+      <div class="countdown-badge">${countdownText}</div>
       <div class="meet-facts">
         <div><div class="label">Date</div><div class="value">${fmtDate(next.date)}</div></div>
         <div><div class="label">Location</div><div class="value">${next.location}</div></div>
@@ -306,6 +314,31 @@ const MEETS = [
   sorted.forEach((m, i) => {
     if (inForecastWindow(m)) loadWeatherInto(`weatherValue-${i}`, `weatherFact-${i}`, m);
   });
+})();
+
+// ---- Scroll-spy: highlight the in-page nav link for whichever section is in view ----
+(function scrollSpy(){
+  const sectionIds = ['next-meet', 'calendar', 'links'];
+  const navLinks = {};
+  sectionIds.forEach(id => {
+    const link = document.querySelector(`#navlinks a[href="#${id}"]`);
+    if (link) navLinks[id] = link;
+  });
+  const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+  if (!('IntersectionObserver' in window) || sections.length === 0) return;
+
+  function setActive(id){
+    Object.values(navLinks).forEach(a => a.classList.remove('nav-current'));
+    if (navLinks[id]) navLinks[id].classList.add('nav-current');
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) setActive(entry.target.id);
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+
+  sections.forEach(s => observer.observe(s));
 })();
 </script>
 
