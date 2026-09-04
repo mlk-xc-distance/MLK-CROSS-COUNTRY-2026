@@ -60,9 +60,6 @@
       <div id="athletePicker" style="display:none;">
         <select id="athleteSelect" class="athlete-select"></select>
       </div>
-      <div id="searchWrap" style="flex:1; min-width:180px;">
-        <input type="search" id="resultsSearch" placeholder="Search meets or athletes…" aria-label="Search meets or athletes" class="athlete-select" style="width:100%; cursor:text;">
-      </div>
     </div>
 
     <div id="resultsList"></div>
@@ -599,15 +596,9 @@ const ALL_RESULTS = [...RESULTS, ...RESULTS_HISTORY];
       : time;
   }
 
-  function finisherTable(finishers, nameQuery, hideIfNoMatch){
+  function finisherTable(finishers){
     if (!finishers || finishers.length === 0) return '';
-    let toShow = finishers;
-    if (nameQuery){
-      const matches = finishers.filter(f => f.name.toLowerCase().includes(nameQuery));
-      if (matches.length > 0) toShow = matches;
-      else if (hideIfNoMatch) return '';
-    }
-    const sorted = [...toShow].sort((a, b) => timeToSeconds(a.time) - timeToSeconds(b.time));
+    const sorted = [...finishers].sort((a, b) => timeToSeconds(a.time) - timeToSeconds(b.time));
     return `
       <div class="results-table">
         <div class="results-table-head">
@@ -628,29 +619,12 @@ const ALL_RESULTS = [...RESULTS, ...RESULTS_HISTORY];
     `;
   }
 
-  function meetMatchesSearch(r, query){
-    if (!query) return true;
-    const q = query.toLowerCase();
-    if (r.meetName.toLowerCase().includes(q)) return true;
-    if (r.location && r.location.toLowerCase().includes(q)) return true;
-    const allFinishers = [...(r.topBoys || []), ...(r.topGirls || [])];
-    return allFinishers.some(f => f.name.toLowerCase().includes(q));
-  }
-
   function renderByMeet(){
     if (ALL_RESULTS.length === 0){
       list.innerHTML = `<div class="callout">No results posted yet — check back after race day.</div>`;
       return;
     }
-    const query = (document.getElementById('resultsSearch').value || '').trim();
-    const q = query.toLowerCase();
-    const isPersonSearch = q && allAthleteNames().some(n => n.toLowerCase().includes(q));
-    const sorted = [...ALL_RESULTS].filter(r => meetMatchesSearch(r, query)).sort((a, b) => b.date.localeCompare(a.date));
-
-    if (sorted.length === 0){
-      list.innerHTML = `<div class="callout">No meets or athletes match "${query}".</div>`;
-      return;
-    }
+    const sorted = [...ALL_RESULTS].sort((a, b) => b.date.localeCompare(a.date));
 
     const seasons = [];
     sorted.forEach(r => {
@@ -670,8 +644,8 @@ const ALL_RESULTS = [...RESULTS, ...RESULTS_HISTORY];
             ${r.girlsPlace ? `<div><div class="label" style="color:var(--slate);">Girls Team</div><div class="value" style="color:var(--pine);">${r.girlsPlace}</div></div>` : ''}
           </div>` : ''}
           <div class="results-columns">
-            ${r.topBoys ? `<div><h4 class="link-subhead" style="margin-top:14px;">Boys</h4>${finisherTable(r.topBoys, q, isPersonSearch)}</div>` : ''}
-            ${r.topGirls ? `<div><h4 class="link-subhead" style="margin-top:14px;">Girls</h4>${finisherTable(r.topGirls, q, isPersonSearch)}</div>` : ''}
+            ${r.topBoys ? `<div><h4 class="link-subhead" style="margin-top:14px;">Boys</h4>${finisherTable(r.topBoys)}</div>` : ''}
+            ${r.topGirls ? `<div><h4 class="link-subhead" style="margin-top:14px;">Girls</h4>${finisherTable(r.topGirls)}</div>` : ''}
           </div>
           ${r.resultsLink ? `<div style="margin-top:14px;"><a href="${r.resultsLink}" target="_blank" rel="noopener" style="color:var(--clay); font-weight:600; text-decoration:underline;">Official Results →</a></div>` : ''}
         </div>
@@ -817,14 +791,9 @@ const ALL_RESULTS = [...RESULTS, ...RESULTS_HISTORY];
     btn.setAttribute('aria-pressed', 'true');
     currentView = btn.dataset.view;
     athletePicker.style.display = currentView === 'athlete' ? 'block' : 'none';
-    document.getElementById('searchWrap').style.display = currentView === 'meet' ? 'block' : 'none';
     if (currentView === 'meet') renderByMeet();
     else if (currentView === 'athlete') renderByAthlete();
     else renderByPR();
-  });
-
-  document.getElementById('resultsSearch').addEventListener('input', () => {
-    if (currentView === 'meet') renderByMeet();
   });
 
   renderByMeet();
