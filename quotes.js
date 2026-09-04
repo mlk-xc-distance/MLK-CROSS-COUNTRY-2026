@@ -5,7 +5,6 @@
    ============================================================ */
 const QUOTES = [
   { text: "The miracle isn't that I finished. The miracle is that I had the courage to start.", author: "John Bingham" },
- { text: “Pain is inevitable. Suffering is optional.”, author: "Haruki Murakami" },
   { text: "Run when you can, walk if you have to, crawl if you must; just never give up.", author: "Dean Karnazes" },
   { text: "The obsession with running is really an obsession with the potential for more and more life.", author: "George Sheehan" },
   { text: "Somewhere in the world someone is training when you are not. When you race him, he will win.", author: "Tom Fleming" },
