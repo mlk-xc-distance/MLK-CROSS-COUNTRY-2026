@@ -280,8 +280,21 @@
     background:var(--pine); color:var(--stone);
     padding:30px 0; font-size:14px;
   }
-  footer .wrap{display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;}
+  footer .footer-bottom{display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;}
   footer a{color:var(--clay-soft);}
+  .quote-line{
+    font-size:13.5px;
+    font-style:italic;
+    color:var(--clay-soft);
+    margin-bottom:16px;
+    padding-bottom:16px;
+    border-bottom:1px solid var(--pine-soft);
+  }
+  .quote-line .quote-author{
+    font-style:normal;
+    font-weight:600;
+    opacity:0.85;
+  }
 
   .placeholder-note{
     font-size:13px; color:var(--slate); font-style:italic; margin-top:12px;
@@ -399,6 +412,7 @@
     .nav-toggle{display:none !important;}
     #navlinks{display:flex !important; position:static !important; flex-direction:row !important;}
     .hero .label, .hero .kicker{color:#444 !important;}
+    .quote-line, .quote-line .quote-author{color:#333 !important;}
     .hero .value, .hero h1{color:black !important;}
     .hero h1 a, .hero h1 a[href]{color:black !important; border-bottom-color:#999 !important;}
 
