@@ -790,6 +790,12 @@ const ALL_RESULTS = [...RESULTS, ...RESULTS_HISTORY];
   });
 
   renderByMeet();
+
+  const params = new URLSearchParams(window.location.search);
+  const requestedAthlete = params.get('athlete');
+  if (requestedAthlete && allAthleteNames().includes(requestedAthlete)){
+    window.goToAthlete(requestedAthlete);
+  }
 })();
 </script>
 
