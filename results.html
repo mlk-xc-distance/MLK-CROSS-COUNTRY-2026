@@ -599,9 +599,15 @@ const ALL_RESULTS = [...RESULTS, ...RESULTS_HISTORY];
       : time;
   }
 
-  function finisherTable(finishers){
+  function finisherTable(finishers, nameQuery, hideIfNoMatch){
     if (!finishers || finishers.length === 0) return '';
-    const sorted = [...finishers].sort((a, b) => timeToSeconds(a.time) - timeToSeconds(b.time));
+    let toShow = finishers;
+    if (nameQuery){
+      const matches = finishers.filter(f => f.name.toLowerCase().includes(nameQuery));
+      if (matches.length > 0) toShow = matches;
+      else if (hideIfNoMatch) return '';
+    }
+    const sorted = [...toShow].sort((a, b) => timeToSeconds(a.time) - timeToSeconds(b.time));
     return `
       <div class="results-table">
         <div class="results-table-head">
@@ -637,6 +643,8 @@ const ALL_RESULTS = [...RESULTS, ...RESULTS_HISTORY];
       return;
     }
     const query = (document.getElementById('resultsSearch').value || '').trim();
+    const q = query.toLowerCase();
+    const isPersonSearch = q && allAthleteNames().some(n => n.toLowerCase().includes(q));
     const sorted = [...ALL_RESULTS].filter(r => meetMatchesSearch(r, query)).sort((a, b) => b.date.localeCompare(a.date));
 
     if (sorted.length === 0){
@@ -662,8 +670,8 @@ const ALL_RESULTS = [...RESULTS, ...RESULTS_HISTORY];
             ${r.girlsPlace ? `<div><div class="label" style="color:var(--slate);">Girls Team</div><div class="value" style="color:var(--pine);">${r.girlsPlace}</div></div>` : ''}
           </div>` : ''}
           <div class="results-columns">
-            ${r.topBoys ? `<div><h4 class="link-subhead" style="margin-top:14px;">Boys</h4>${finisherTable(r.topBoys)}</div>` : ''}
-            ${r.topGirls ? `<div><h4 class="link-subhead" style="margin-top:14px;">Girls</h4>${finisherTable(r.topGirls)}</div>` : ''}
+            ${r.topBoys ? `<div><h4 class="link-subhead" style="margin-top:14px;">Boys</h4>${finisherTable(r.topBoys, q, isPersonSearch)}</div>` : ''}
+            ${r.topGirls ? `<div><h4 class="link-subhead" style="margin-top:14px;">Girls</h4>${finisherTable(r.topGirls, q, isPersonSearch)}</div>` : ''}
           </div>
           ${r.resultsLink ? `<div style="margin-top:14px;"><a href="${r.resultsLink}" target="_blank" rel="noopener" style="color:var(--clay); font-weight:600; text-decoration:underline;">Official Results →</a></div>` : ''}
         </div>
