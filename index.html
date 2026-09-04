@@ -52,7 +52,6 @@
     <div class="section-head">
       <div>
         <h2>Season calendar</h2>
-        <div class="callout">Athletes should show up 75–90 minutes before race start time.</div>
       </div>
     </div>
     <ol class="meet-list" id="meetList"></ol>
@@ -260,6 +259,7 @@ const MEETS = [
         <div><div class="label">Date</div><div class="value">${fmtDate(next.date)}</div></div>
         <div><div class="label">Location</div><div class="value">${next.location}</div></div>
         <div><div class="label">Race times</div><div class="value">${next.time}</div></div>
+        <div><div class="label">Arrival</div><div class="value">75–90 min before race time</div></div>
         ${linkFact("Address", mapsUrl(next), next.address || "")}
         ${next.parking ? `<div><div class="label">Parking</div><div class="value">${next.parking}${next.parkingMap ? `<br><a href="${next.parkingMap}" target="_blank" rel="noopener" style="color:var(--clay-soft); font-size:14px;">Link to Parking Map</a>` : ''}</div></div>` : ''}
         ${inForecastWindow(next) ? `<div id="heroWeatherFact"><div class="label">Weather</div><div class="value" id="heroWeatherValue">Loading forecast…</div></div>` : ''}
