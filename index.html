@@ -182,7 +182,11 @@ const MEETS = [
 ];
 
 (function render(){
-  const todayStr = new Date().toISOString().slice(0,10);
+  function getCentralDateStr(){
+    const fmt = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Chicago', year: 'numeric', month: '2-digit', day: '2-digit' });
+    return fmt.format(new Date());
+  }
+  const todayStr = getCentralDateStr();
 
   function fmtDate(iso){
     const d = new Date(iso + "T00:00:00");
